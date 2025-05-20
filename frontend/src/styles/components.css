@@ -1,0 +1,32 @@
+/* Navbar styles */
+.nav-link {
+    @apply text-noir-text hover:text-noir-primary transition-colors duration-200;
+}
+
+/* Button styles */
+.btn-primary {
+    @apply px-4 py-2 bg-noir-primary text-noir-bg rounded-lg font-bold shadow-neon hover:shadow-neon-secondary transition-all duration-300;
+}
+
+.btn-secondary {
+    @apply px-4 py-2 border-2 border-noir-primary text-noir-primary rounded-lg font-bold hover:bg-noir-primary hover:text-noir-bg transition-all duration-300;
+}
+
+/* Card styles */
+.card {
+    @apply bg-noir-card p-6 rounded-lg border border-noir-accent;
+}
+
+/* Form styles */
+.form-input {
+    @apply w-full px-4 py-2 bg-noir-bg border border-noir-accent rounded-lg text-noir-text focus:outline-none focus:border-noir-primary;
+}
+
+.form-label {
+    @apply block text-noir-text mb-2;
+}
+
+/* Loading spinner */
+.spinner {
+    @apply animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-noir-primary;
+}

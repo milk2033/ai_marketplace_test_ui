@@ -1,4 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* Import custom styles */
+@import './styles/components.css';
+@import './styles/animations.css';
+@import './styles/utilities.css';
+
 body {
   margin: 0;
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a0a0a;
+  color: #e0e0e0;
+}
 
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a2a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00ff9d;
+}
+
+/* Animations */
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px #00ff9d, 0 0 20px #00ff9d;
+  }
+
+  50% {
+    box-shadow: 0 0 10px #00ff9d, 0 0 30px #00ff9d;
+  }
+
+  100% {
+    box-shadow: 0 0 5px #00ff9d, 0 0 20px #00ff9d;
+  }
+}
+
+.animate-glow {
+  animation: glow 2s infinite;
 }
