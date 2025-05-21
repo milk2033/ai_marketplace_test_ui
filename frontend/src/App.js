@@ -6,6 +6,7 @@ import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import Upload from './pages/Upload';
+import ModelDetails from './pages/ModelDetails';
 import './index.css';
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/upload" element={<Upload />} />
+            <Route path="/models/:id" element={<ModelDetails />} />
           </Routes>
         </main>
         <ToastContainer

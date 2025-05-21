@@ -1,2 +1,6 @@
 npm install --save-dev hardhat
 npx hardhat init 
+
+
+todo list:
+add model details by clicking a model card

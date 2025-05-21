@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import ConnectWalletButton from './ConnectWalletButton';
 
 const Navbar = () => {
     return (
@@ -16,9 +17,12 @@ const Navbar = () => {
                         </motion.div>
                     </Link>
 
-                    <div className="flex space-x-8">
+                    <div className="flex items-center space-x-8">
                         <NavLink to="/marketplace">Marketplace</NavLink>
                         <NavLink to="/upload">Upload Model</NavLink>
+                        <div className="flex items-center">
+                            <ConnectWalletButton />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,7 +31,7 @@ const Navbar = () => {
 };
 
 const NavLink = ({ to, children }) => (
-    <Link to={to}>
+    <Link to={to} className="flex items-center">
         <motion.div
             whileHover={{ scale: 1.05 }}
             className="nav-link"
