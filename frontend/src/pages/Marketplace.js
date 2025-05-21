@@ -27,7 +27,6 @@ const Marketplace = () => {
         try {
             const response = await axios.post(`http://localhost:5000/api/models/${modelId}/buy`);
             toast.success('Purchase successful!');
-            // Refresh the models list
             fetchModels();
         } catch (error) {
             toast.error('Failed to purchase model');
@@ -38,16 +37,16 @@ const Marketplace = () => {
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[60vh]">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-noir-primary"></div>
+                <div className="spinner"></div>
             </div>
         );
     }
 
     return (
-        <div className="max-w-7xl mx-auto">
-            <h1 className="text-4xl font-bold mb-8 text-noir-primary">AI Models Marketplace</h1>
+        <div className="container-custom">
+            <h1 className="text-4xl font-bold mb-8 text-gradient">AI Models Marketplace</h1>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid-auto-fit">
                 {models.map((model) => (
                     <ModelCard key={model.id} model={model} onBuy={handleBuy} />
                 ))}
@@ -60,25 +59,22 @@ const ModelCard = ({ model, onBuy }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        whileHover={{ y: -5 }}
-        className="bg-noir-card rounded-lg overflow-hidden border border-noir-accent"
+        className="card hover-lift"
     >
-        <div className="p-6">
-            <h3 className="text-xl font-bold text-noir-primary mb-2">{model.name}</h3>
-            <p className="text-noir-muted mb-4">Creator: {model.creator.slice(0, 6)}...{model.creator.slice(-4)}</p>
-            <div className="flex justify-between items-center">
-                <span className="text-noir-primary font-bold">
-                    {parseInt(model.price) / 1e18} ETH
-                </span>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => onBuy(model.id)}
-                    className="px-4 py-2 bg-noir-primary text-noir-bg rounded-lg font-bold shadow-neon hover:shadow-neon-secondary transition-all duration-300"
-                >
-                    Buy Now
-                </motion.button>
-            </div>
+        <h3 className="text-xl font-bold text-noir-primary mb-2">{model.name}</h3>
+        <p className="text-noir-muted mb-4">Creator: {model.creator.slice(0, 6)}...{model.creator.slice(-4)}</p>
+        <div className="flex justify-between items-center">
+            <span className="text-noir-primary font-bold">
+                {parseInt(model.price) / 1e18} ETH
+            </span>
+            <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => onBuy(model.id)}
+                className="btn-primary"
+            >
+                Buy Now
+            </motion.button>
         </div>
     </motion.div>
 );

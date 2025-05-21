@@ -42,33 +42,33 @@ const Upload = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto">
-            <h1 className="text-4xl font-bold mb-8 text-noir-primary">Upload AI Model</h1>
+        <div className="container-custom max-w-2xl">
+            <h1 className="text-4xl font-bold mb-8 text-gradient">Upload AI Model</h1>
 
             <motion.form
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-noir-card p-8 rounded-lg border border-noir-accent"
+                className="card"
                 onSubmit={handleSubmit}
             >
                 <div className="mb-6">
-                    <label className="block text-noir-text mb-2">Model Name</label>
+                    <label className="form-label">Model Name</label>
                     <input
                         type="text"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        className="w-full px-4 py-2 bg-noir-bg border border-noir-accent rounded-lg text-noir-text focus:outline-none focus:border-noir-primary"
+                        className="form-input"
                         placeholder="Enter model name"
                     />
                 </div>
 
                 <div className="mb-6">
-                    <label className="block text-noir-text mb-2">Price (ETH)</label>
+                    <label className="form-label">Price (ETH)</label>
                     <input
                         type="number"
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}
-                        className="w-full px-4 py-2 bg-noir-bg border border-noir-accent rounded-lg text-noir-text focus:outline-none focus:border-noir-primary"
+                        className="form-input"
                         placeholder="Enter price in ETH"
                         step="0.01"
                         min="0"
@@ -76,7 +76,7 @@ const Upload = () => {
                 </div>
 
                 <div className="mb-8">
-                    <label className="block text-noir-text mb-2">Model File</label>
+                    <label className="form-label">Model File</label>
                     <div className="border-2 border-dashed border-noir-accent rounded-lg p-6 text-center">
                         <input
                             type="file"
@@ -100,8 +100,8 @@ const Upload = () => {
                     disabled={uploading}
                     className={`w-full py-3 rounded-lg font-bold ${uploading
                         ? 'bg-noir-muted cursor-not-allowed'
-                        : 'bg-noir-primary text-noir-bg shadow-neon hover:shadow-neon-secondary'
-                        } transition-all duration-300`}
+                        : 'btn-primary'
+                        }`}
                 >
                     {uploading ? 'Uploading...' : 'Upload Model'}
                 </motion.button>
