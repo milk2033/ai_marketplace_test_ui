@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 
 const Marketplace = () => {
     const [models, setModels] = useState([]);
@@ -56,45 +55,28 @@ const Marketplace = () => {
     );
 };
 
-const ModelCard = ({ model, onBuy }) => {
-    const navigate = useNavigate();
-
-    const handleCardClick = (e) => {
-        // Prevent navigation if clicking the buy button
-        if (e.target.closest('.btn-primary')) {
-            return;
-        }
-        navigate(`/models/${model.id}`);
-    };
-
-    return (
-        <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="card hover-lift cursor-pointer transition-all duration-300 hover:shadow-[0_0_15px_rgba(147,51,234,0.3)] hover:border-noir-accent"
-            onClick={handleCardClick}
-        >
-            <h3 className="text-xl font-bold text-noir-primary mb-2">{model.name}</h3>
-            <p className="text-noir-muted mb-4">Creator: {model.creator.slice(0, 6)}...{model.creator.slice(-4)}</p>
-
-            <div className="flex justify-between items-center">
-                <span className="text-noir-primary font-bold">
-                    {parseInt(model.price) / 1e18} ETH
-                </span>
-                <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        onBuy(model.id);
-                    }}
-                    className="btn-primary"
-                >
-                    Buy Now
-                </motion.button>
-            </div>
-        </motion.div>
-    );
-};
+const ModelCard = ({ model, onBuy }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="card hover-lift"
+    >
+        <h3 className="text-xl font-bold text-noir-primary mb-2">{model.name}</h3>
+        <p className="text-noir-muted mb-4">Creator: {model.creator.slice(0, 6)}...{model.creator.slice(-4)}</p>
+        <div className="flex justify-between items-center">
+            <span className="text-noir-primary font-bold">
+                {parseInt(model.price) / 1e18} ETH
+            </span>
+            <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => onBuy(model.id)}
+                className="btn-primary"
+            >
+                Buy Now
+            </motion.button>
+        </div>
+    </motion.div>
+);
 
 export default Marketplace; 

@@ -4,3 +4,7 @@ npx hardhat init
 
 todo list:
 add model details by clicking a model card
+create token (staking, revshare)
+add staking page
+add revshare page
+
