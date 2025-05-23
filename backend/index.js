@@ -9,11 +9,14 @@ const { JsonRpcProvider, Wallet, Contract } = require("ethers");
 const { create } = require("@web3-storage/w3up-client");
 const { Blob } = require("buffer");
 const config = require(path.resolve(__dirname, "../frontend/src/config/contract-config.json"));
+const { LoraMarketplace } = require(path.resolve(__dirname, "../frontend/src/contracts/LoraMarketplace.json"));
+const { CognifyToken } = require(path.resolve(__dirname, "../frontend/src/contracts/CognifyToken.json"));
+const { StakingRewards } = require(path.resolve(__dirname, "../frontend/src/contracts/StakingRewards.json"));
 
 const app = express();
 const PORT = 5000;
 
-// Enable CORS and JSON parsing
+// Enable CORS and JSON parsing 
 app.use(cors());
 app.use(express.json());
 
@@ -36,7 +39,55 @@ const provider = new JsonRpcProvider(
     `https://base-sepolia.g.alchemy.com/v2/${ALCHEMY_API_KEY}`
 );
 const wallet = new Wallet(PRIVATE_KEY, provider);
+
+//can delete contract, this is old
 const contract = new Contract(config.address, config.abi, wallet);
+
+// CognifyToken contract
+const cognifyToken = new Contract(CognifyToken.address, CognifyToken.abi, wallet);
+
+// StakingRewards contract
+const stakingRewards = new Contract(StakingRewards.address, StakingRewards.abi, wallet);
+
+// LoraMarketplace contract
+const loraMarketplace = new Contract(LoraMarketplace.address, LoraMarketplace.abi, wallet);
+
+// Build a simple registry of instances
+const CONTRACTS = {
+    LoraMarketplace: loraMarketplace,
+    CognifyToken: cognifyToken,
+    StakingRewards: stakingRewards,
+};
+
+// Whitelist which methods are allowed on each
+const ALLOWED = {
+    LoraMarketplace: ["uploadModel", "buyModel", "getModel", "modelCount"],
+    CognifyToken: ["approve", "transfer", "balanceOf"],
+    StakingRewards: ["stake", "withdraw", "claimRewards", "pendingReward"],
+};
+
+app.post("/api/relay", async (req, res) => {
+    try {
+        const { contract: name, method, args } = req.body;
+
+        // 1) Validate contract name and method
+        if (!CONTRACTS[name]) {
+            return res.status(404).json({ error: `Unknown contract: ${name}` });
+        }
+        if (!ALLOWED[name]?.includes(method)) {
+            return res.status(403).json({ error: `Method "${method}" not allowed on ${name}` });
+        }
+
+        // 2) Invoke
+        const c = CONTRACTS[name];
+        const tx = await c[method](...(Array.isArray(args) ? args : []));
+        // 3) Return tx hash
+        return res.json({ hash: tx.hash });
+    } catch (err) {
+        console.error("Relay error:", err);
+        return res.status(500).json({ error: err.message });
+    }
+});
 
 // w3up client and Space initialization
 let w3upClient;

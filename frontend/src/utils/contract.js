@@ -8,10 +8,10 @@ export const CONTRACT_ABI = config.abi;
 
 
 // export const CONTRACT_ABI = [
-//     {
+//     { 
 //         "anonymous": false,
 //         "inputs": [
-//             {
+//             { 
 //                 "indexed": true,
 //                 "internalType": "uint256",
 //                 "name": "id",

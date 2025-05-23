@@ -21,6 +21,9 @@ const Navbar = () => {
                         <NavLink to="/upload">Upload Model</NavLink>
                         <ConnectWalletButton />
                     </div>
+                    <div>
+                        <p>CGFY Token Balance: 10</p>
+                    </div>
                 </div>
             </div>
         </nav>

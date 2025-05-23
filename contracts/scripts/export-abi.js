@@ -1,17 +1,41 @@
+// scripts/export-abis.js
 const fs = require("fs");
 const path = require("path");
 
 async function main() {
-    const artifactPath = path.join(__dirname, "../artifacts/contracts/LoraMarket.sol/LoraMarketplace.json");
-    const artifact = require(artifactPath);
+    // list your contracts here: [ sourceFilename, contractName, outputFilename ]
+    const contracts = [
+        ["LoraMarket.sol", "LoraMarketplace", "LoraMarketplace.json"],
+        ["CognifyToken.sol", "CognifyToken", "CognifyToken.json"],
+        ["StakingRewards.sol", "StakingRewards", "StakingRewards.json"],
+    ];
 
     const abiDir = path.join(__dirname, "../abi");
     if (!fs.existsSync(abiDir)) {
         fs.mkdirSync(abiDir);
     }
 
-    fs.writeFileSync(path.join(abiDir, "LoraMarketplace.json"), JSON.stringify(artifact.abi, null, 2));
-    console.log("✅ ABI exported to abi/LoraMarketplace.json");
+    for (const [src, name, out] of contracts) {
+        const artifactPath = path.join(
+            __dirname,
+            "../artifacts/contracts",
+            src,
+            `${name}.json`
+        );
+        if (!fs.existsSync(artifactPath)) {
+            console.error(`❌  Artifact not found: ${artifactPath}`);
+            continue;
+        }
+        const { abi } = require(artifactPath);
+        fs.writeFileSync(
+            path.join(abiDir, out),
+            JSON.stringify(abi, null, 2)
+        );
+        console.log(`✅  ABI for ${name} written to abi/${out}`);
+    }
 }
 
-main();
+main().catch((e) => {
+    console.error(e);
+    process.exit(1);
+});

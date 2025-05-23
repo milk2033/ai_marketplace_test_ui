@@ -14,7 +14,7 @@ contract CognifyToken is ERC20, Ownable {
     uint8 public constant DECIMALS = 18;
     uint256 public constant TOTAL_SUPPLY = 1_000_000_000 * (10 ** DECIMALS);
 
-    /** 
+    /**   
 
 @dev Sets the token name, symbol, and mints the total supply to the deployer.
 */

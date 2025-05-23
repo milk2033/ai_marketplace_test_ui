@@ -1,5 +1,11 @@
 require("@nomicfoundation/hardhat-toolbox");
+const path = require("path");
 require("dotenv").config();
+
+require("dotenv").config({
+  path: path.resolve(__dirname, "../.env")
+});
+
 
 module.exports = {
   solidity: {
@@ -23,9 +29,7 @@ module.exports = {
       // Local development network
     },
     baseSepolia: {
-      url: process.env.ALCHEMY_API_KEY
-        ? `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
-        : "http://localhost:8545",
+      url: `https://base-sepolia.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
       chainId: 84532,
       accounts: process.env.PRIVATE_KEY ? [process.env.PRIVATE_KEY] : []
     }
