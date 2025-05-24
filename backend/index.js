@@ -9,9 +9,9 @@ const { JsonRpcProvider, Wallet, Contract } = require("ethers");
 const { create } = require("@web3-storage/w3up-client");
 const { Blob } = require("buffer");
 const config = require(path.resolve(__dirname, "../frontend/src/config/contract-config.json"));
-const { LoraMarketplace } = require(path.resolve(__dirname, "../frontend/src/contracts/LoraMarketplace.json"));
-const { CognifyToken } = require(path.resolve(__dirname, "../frontend/src/contracts/CognifyToken.json"));
-const { StakingRewards } = require(path.resolve(__dirname, "../frontend/src/contracts/StakingRewards.json"));
+const LoraMarketplace = require(path.resolve(__dirname, "../frontend/src/contracts/LoraMarketplace.json"));
+const CognifyToken = require(path.resolve(__dirname, "../frontend/src/contracts/CognifyToken.json"));
+const StakingRewards = require(path.resolve(__dirname, "../frontend/src/contracts/StakingRewards.json"));
 
 const app = express();
 const PORT = 5000;
@@ -22,6 +22,7 @@ app.use(express.json());
 
 // Health-check endpoint
 app.get("/", (_req, res) => res.send("Backend running."));
+
 
 // Load environment variables
 const {
