@@ -103,8 +103,8 @@ const Navbar = () => {
                         <NavLink to="/upload">Upload Model</NavLink>
                     </div>
                     {/* maybe move the CGFY token balance somewhere else, looks bad here imo */}
-                    <div className="flex flex-col items-center justify-center">
-                        <p className="text-[0.7em]">CGFY Token Balance: {balance}</p>
+                    <div className="flex flex-col items-end">
+                        {/* <p className="text-[0.7em]">CGFY Token Balance: {balance}</p> */}
                         <ConnectWalletButton />
                     </div>
 
