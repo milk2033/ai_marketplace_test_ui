@@ -12,13 +12,13 @@ async function main() {
     const CognifyToken_contract = await ethers.getContractFactory("CognifyToken");
     const StakingRewards_contract = await ethers.getContractFactory("StakingRewards");
 
-    console.log('deploying LoraMarketplace...  ')
-    const LoraMarketplace = await LoraMarketplace_contract.deploy();
-    await LoraMarketplace.waitForDeployment();
-
     console.log('deploying CognifyToken...  ')
     const cognifyToken = await CognifyToken_contract.deploy();
     await cognifyToken.waitForDeployment();
+
+    console.log('deploying LoraMarketplace...  ')
+    const LoraMarketplace = await LoraMarketplace_contract.deploy(500, cognifyToken.target);
+    await LoraMarketplace.waitForDeployment();
 
     const currentBlock = await ethers.provider.getBlockNumber();
     const startBlock = currentBlock + 1;

@@ -1,6 +1,22 @@
 {
-  "address": "0x6bc46740caeA6A753eC4F280343fe54B1457d725",
+  "address": "0xD221A4da18357188C9F106fB8ACf6cB16b381cb6",
   "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_revShareBP",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "_revShareReceiver",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
     {
       "anonymous": false,
       "inputs": [
@@ -15,6 +31,12 @@
           "internalType": "address",
           "name": "buyer",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "revShare",
+          "type": "uint256"
         }
       ],
       "name": "ModelPurchased",
@@ -167,6 +189,32 @@
           "internalType": "uint256",
           "name": "purchases",
           "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "revShareBP",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "revShareReceiver",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
         }
       ],
       "stateMutability": "view",

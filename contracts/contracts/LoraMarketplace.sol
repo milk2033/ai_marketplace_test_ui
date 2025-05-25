@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+interface IRevShare {
+    function distributeRevShare() external payable;
+}
+
 contract LoraMarketplace {
     uint256 public modelCount = 0;
+    uint256 public revShareBP; //rev share in basis points
+    address public revShareReceiver; //staking rewards contract
 
     struct Model {
         uint256 id;
@@ -21,7 +27,17 @@ contract LoraMarketplace {
         address indexed creator,
         uint256 price
     );
-    event ModelPurchased(uint256 indexed id, address indexed buyer);
+    event ModelPurchased(
+        uint256 indexed id,
+        address indexed buyer,
+        uint256 revShare
+    );
+
+    constructor(uint256 _revShareBP, address _revShareReceiver) {
+        require(_revShareBP <= 10000, "bp > 100%");
+        revShareBP = _revShareBP;
+        revShareReceiver = _revShareReceiver;
+    }
 
     function uploadModel(
         string memory _name,
@@ -45,10 +61,15 @@ contract LoraMarketplace {
         Model storage model = models[_id];
         require(msg.value >= model.price, "Insufficient payment");
 
-        model.creator.transfer(msg.value);
+        uint256 revShare = (msg.value * revShareBP) / 10_000;
+        uint256 sellerAmt = msg.value - revShare;
+
+        IRevShare(revShareReceiver).distributeRevShare{value: revShare}();
+
+        model.creator.transfer(sellerAmt);
         model.purchases++;
 
-        emit ModelPurchased(_id, msg.sender);
+        emit ModelPurchased(_id, msg.sender, revShare);
     }
 
     function getModel(uint256 _id) public view returns (Model memory) {

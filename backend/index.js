@@ -52,7 +52,7 @@ const stakingRewards = new Contract(StakingRewards.address, StakingRewards.abi, 
 
 // LoraMarketplace contract
 const loraMarketplace = new Contract(LoraMarketplace.address, LoraMarketplace.abi, wallet);
-
+console.log('loraMarketplace', loraMarketplace)
 // Build a simple registry of instances
 const CONTRACTS = {
     LoraMarketplace: loraMarketplace,
@@ -69,7 +69,7 @@ const ALLOWED = {
 
 app.post("/api/relay", async (req, res) => {
     try {
-        const { contract: name, method, args } = req.body;
+        const { loraMarketplace: name, method, args } = req.body;
 
         // 1) Validate contract name and method
         if (!CONTRACTS[name]) {
@@ -138,7 +138,7 @@ app.post(
 
             // 5) Call smart contract
             console.log('name', name, 'downloadUrl', downloadUrl, 'price', price)
-            const tx = await contract.uploadModel(name, downloadUrl, price);
+            const tx = await loraMarketplace.uploadModel(name, downloadUrl, price);
             const receipt = await tx.wait(1);
             console.log("Transaction hash:", receipt.hash);
             // 6) Respond
@@ -156,12 +156,12 @@ app.post("/api/models/:id/buy", async (req, res) => {
         const id = req.params.id;
 
         // 1) Fetch the model to get its price
-        const model = await contract.getModel(id);
+        const model = await loraMarketplace.getModel(id);
         const price = model.price;      // BigNumber
         console.log('model', model)
 
         // 2) Submit the purchase tx, sending `price` in value
-        const tx = await contract.buyModel(id, { value: price });
+        const tx = await loraMarketplace.buyModel(id, { value: price });
         const receipt = await tx.wait(1);
         console.log(`Model ${id} purchased in tx ${receipt.hash}`);
         res.json({ txHash: receipt.hash });
@@ -174,13 +174,13 @@ app.post("/api/models/:id/buy", async (req, res) => {
 // GET all models
 app.get("/api/models", async (_req, res) => {
     try {
-        const countBn = await contract.modelCount();
+        const countBn = await loraMarketplace.modelCount();
         console.log('countBn', countBn)
         const count = Number(countBn);  // convert to Number
         console.log('count', count)
         // fetch each on-chain Model
         const raw = await Promise.all(
-            Array.from({ length: count }, (_, i) => contract.getModel(i + 1))
+            Array.from({ length: count }, (_, i) => loraMarketplace.getModel(i + 1))
         );
 
         // map to JSON
