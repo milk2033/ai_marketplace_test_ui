@@ -191,11 +191,4 @@ describe('RevShare Behavior', function () {
         expect(await staking.pendingRevShare(alice.address)).to.equal(0n);
     });
 
-
-
-
-
-
-
-
 })

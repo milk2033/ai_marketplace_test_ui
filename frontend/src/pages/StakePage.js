@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ethers } from 'ethers';
 import CognifyToken from '../contracts/CognifyToken.json';
+import StakingRewards from '../contracts/StakingRewards.json';
+import { toast } from 'react-toastify';
 
 const StakePage = () => {
     const [balance, setBalance] = useState('0');
     const [account, setAccount] = useState('');
     const [stakeAmount, setStakeAmount] = useState('');
+    const [isStaking, setIsStaking] = useState(false);
 
     useEffect(() => {
         // Check if MetaMask is installed
@@ -95,6 +98,61 @@ const StakePage = () => {
         }
     };
 
+    const handleStake = async () => {
+        if (!window.ethereum) {
+            toast.error('Please install MetaMask to use this feature');
+            return;
+        }
+
+        if (!stakeAmount || parseFloat(stakeAmount) <= 0) {
+            toast.error('Please enter a valid amount to stake');
+            return;
+        }
+
+        try {
+            setIsStaking(true);
+            const provider = new ethers.BrowserProvider(window.ethereum);
+            const signer = await provider.getSigner();
+
+            // First approve the staking contract to spend tokens
+            const tokenContract = new ethers.Contract(
+                CognifyToken.address,
+                CognifyToken.abi,
+                signer
+            );
+
+            const amountToStake = ethers.parseUnits(stakeAmount, 18);
+
+            // Check allowance first
+            const allowance = await tokenContract.allowance(account, StakingRewards.address);
+            if (allowance < amountToStake) {
+                const approveTx = await tokenContract.approve(StakingRewards.address, amountToStake);
+                await approveTx.wait();
+                toast.success('Approval successful!');
+            }
+
+            // Now stake the tokens
+            const stakingContract = new ethers.Contract(
+                StakingRewards.address,
+                StakingRewards.abi,
+                signer
+            );
+
+            const stakeTx = await stakingContract.stake(amountToStake);
+            await stakeTx.wait();
+
+            toast.success('Staking successful!');
+            setStakeAmount('');
+            // Refresh balance
+            fetchBalance(account);
+        } catch (error) {
+            console.error('Error staking:', error);
+            toast.error('Failed to stake tokens');
+        } finally {
+            setIsStaking(false);
+        }
+    };
+
     return (
         <div className="container-custom py-8 w-1/2 mx-auto">
             <div className="flex justify-between items-center mb-6">
@@ -135,9 +193,11 @@ const StakePage = () => {
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="w-full mt-4 btn-primary py-3 rounded-lg font-bold hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300"
+                            onClick={handleStake}
+                            disabled={isStaking}
+                            className={`w-full mt-4 btn-primary py-3 rounded-lg font-bold hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 ${isStaking ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
-                            Stake
+                            {isStaking ? 'Staking...' : 'Stake'}
                         </motion.button>
                     </div>
                 </div>

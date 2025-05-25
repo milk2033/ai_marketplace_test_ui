@@ -1,21 +1,32 @@
-// frontend/src/utils/ipfs.js
-import { Web3Storage } from 'web3.storage';
-
-const TOKEN = process.env.REACT_APP_WEB3STORAGE_TOKEN;
-
-if (!TOKEN) {
-    throw new Error('Missing REACT_APP_WEB3STORAGE_TOKEN in .env');
-}
-
-const client = new Web3Storage({ token: TOKEN });
+// src/utils/ipfs.js
 
 /**
- * Uploads a File or Blob to Web3.Storage (IPFS) and returns an object
- * { cid, url } where url is a gateway URL you can serve to users.
+ * Uploads a browser File to IPFS via Pinata.
+ * Returns the CID (IpfsHash).
  */
-export async function uploadToIPFS(file) {
-    // web3.storage will preserve the filename, so gateway URL = /ipfs/CID/filename
-    const cid = await client.put([file]);
-    const url = `https://ipfs.io/ipfs/${cid}/${encodeURIComponent(file.name)}`;
-    return { cid, url };
+const uploadToIpfs = async (file) => {
+    // Pinata requires a multipart / form - data POST
+    const form = new FormData()
+    form.append("file", file, file.name)
+    const res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+            method: "POST",
+            headers: {
+                // Use the JWT from your .env (exposed in frontend)
+                Authorization: `Bearer ${process.env.REACT_APP_PINATA_JWT}`,
+            },
+            body: form,
+        }
+    )
+
+    if (!res.ok) {
+        const text = await res.text()
+        throw new Error(`Pinata error: ${res.status} ${text}`)
+    }
+
+    const { IpfsHash } = await res.json()
+    return IpfsHash
 }
+
+export default uploadToIpfs;

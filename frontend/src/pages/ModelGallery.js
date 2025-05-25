@@ -20,6 +20,7 @@ const ModelGallery = () => {
 
     return (
         <div className="p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
             {models.map(m => (
                 <div key={m.id} className="border rounded p-4 shadow">
                     <h2 className="font-semibold mb-2">{m.name}</h2>

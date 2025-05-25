@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.3.0",
+    "@vitejs/plugin-react": "^4.5.0",
     "@web3-storage/w3up-client": "^17.2.0",
     "ansi-regex": "^5.0.1",
     "ansi-styles": "^4.3.0",
@@ -31,6 +32,8 @@
     "lodash": "^4.17.21",
     "multer": "^1.4.5-lts.2",
     "nft.storage": "^7.2.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "require-directory": "^2.1.1",
     "rxjs": "^7.8.2",
     "shell-quote": "^1.8.2",
@@ -39,6 +42,7 @@
     "supports-color": "^8.1.1",
     "tree-kill": "^1.2.2",
     "tslib": "^2.8.1",
+    "vite": "^6.3.5",
     "web3.storage": "^4.5.5",
     "wrap-ansi": "^7.0.0",
     "y18n": "^5.0.8",
@@ -55,5 +59,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs"
+  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/milk2033/ai_marketplace_test_ui.git"
+  },
+  "bugs": {
+    "url": "https://github.com/milk2033/ai_marketplace_test_ui/issues"
+  },
+  "homepage": "https://github.com/milk2033/ai_marketplace_test_ui#readme"
 }

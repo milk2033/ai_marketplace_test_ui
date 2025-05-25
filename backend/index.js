@@ -52,7 +52,6 @@ const stakingRewards = new Contract(StakingRewards.address, StakingRewards.abi, 
 
 // LoraMarketplace contract
 const loraMarketplace = new Contract(LoraMarketplace.address, LoraMarketplace.abi, wallet);
-console.log('loraMarketplace', loraMarketplace)
 // Build a simple registry of instances
 const CONTRACTS = {
     LoraMarketplace: loraMarketplace,
