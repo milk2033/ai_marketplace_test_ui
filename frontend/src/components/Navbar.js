@@ -92,15 +92,16 @@ const Navbar = () => {
                     <Link to="/" className="flex items-center space-x-2">
                         <motion.div
                             whileHover={{ scale: 1.05 }}
-                            className="text-gradient text-2xl font-bold"
+                            className="text-gradient text-lg font-bold"
                         >
                             AI Marketplace
                         </motion.div>
                     </Link>
 
-                    <div className="flex space-x-8">
+                    <div className="flex space-x-4">
                         <NavLink to="/marketplace">Marketplace</NavLink>
                         <NavLink to="/upload">Upload Model</NavLink>
+                        <NavLink to="/stake">Stake CGFY</NavLink>
                     </div>
                     {/* maybe move the CGFY token balance somewhere else, looks bad here imo */}
                     <div className="flex flex-col items-end">
@@ -118,7 +119,7 @@ const NavLink = ({ to, children }) => (
     <Link to={to}>
         <motion.div
             whileHover={{ scale: 1.05 }}
-            className="nav-link"
+            className="nav-link text-xs"
         >
             {children}
         </motion.div>

@@ -63,7 +63,7 @@ const ConnectWalletButton = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.05 }}
-                className="btn-secondary"
+                className="btn-secondary text-xs py-1 px-2"
             >
                 Install MetaMask
             </motion.a>
@@ -75,16 +75,16 @@ const ConnectWalletButton = () => {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-1"
             >
-                <span className="text-noir-muted">
+                <span className="text-noir-muted text-xs">
                     {`${account.slice(0, 6)}...${account.slice(-4)}`}
                 </span>
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={disconnectWallet}
-                    className="btn-secondary text-sm"
+                    className="btn-secondary text-xs py-1 px-2"
                 >
                     Disconnect
                 </motion.button>
@@ -98,7 +98,7 @@ const ConnectWalletButton = () => {
             whileTap={{ scale: 0.95 }}
             onClick={connectWallet}
             disabled={isConnecting}
-            className={`btn-primary ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`btn-primary text-xs py-1 px-2 ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
             {isConnecting ? 'Connecting...' : 'Connect Wallet'}
         </motion.button>

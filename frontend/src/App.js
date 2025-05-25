@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Marketplace from './pages/Marketplace';
 import Upload from './pages/Upload';
 import ModelDetails from './pages/ModelDetails';
+import StakePage from './pages/StakePage';
 import './index.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/marketplace" element={<Marketplace />} />
             <Route path="/upload" element={<Upload />} />
             <Route path="/models/:id" element={<ModelDetails />} />
+            <Route path="/stake" element={<StakePage />} />
           </Routes>
         </main>
         <ToastContainer

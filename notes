@@ -3,7 +3,8 @@ npx hardhat init
 
 
 todo list:
-add staking page
-add revshare page
-willl need a token faucet, so probably need to alter the token supply to infinite
+willl need a token faucet, so probably need to alter the token supply to infinity
+plug in staking contract
+plug in APRs
+update model page
 
