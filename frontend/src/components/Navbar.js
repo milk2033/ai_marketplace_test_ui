@@ -101,7 +101,7 @@ const Navbar = () => {
                     <div className="flex space-x-4">
                         <NavLink to="/marketplace">Marketplace</NavLink>
                         <NavLink to="/upload">Upload Model</NavLink>
-                        <NavLink to="/stake">Stake CGFY</NavLink>
+                        <NavLink to="/dashboard">CGFY</NavLink>
                     </div>
                     {/* maybe move the CGFY token balance somewhere else, looks bad here imo */}
                     <div className="flex flex-col items-end">
@@ -119,7 +119,7 @@ const NavLink = ({ to, children }) => (
     <Link to={to}>
         <motion.div
             whileHover={{ scale: 1.05 }}
-            className="nav-link text-xs"
+            className="nav-link text-sm"
         >
             {children}
         </motion.div>

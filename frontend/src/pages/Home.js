@@ -21,13 +21,13 @@ const Home = () => {
 
                 <div className="flex space-x-6 justify-center">
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Link to="/marketplace" className="btn-primary">
+                        <Link to="/marketplace" className="btn-primary shadow-none hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300">
                             Browse Models
                         </Link>
                     </motion.div>
 
                     <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                        <Link to="/upload" className="btn-secondary">
+                        <Link to="/upload" className="btn-secondary hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300">
                             Upload Model
                         </Link>
                     </motion.div>

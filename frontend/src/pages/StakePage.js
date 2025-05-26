@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ethers } from 'ethers';
+import { useNavigate } from 'react-router-dom';
 import CognifyToken from '../contracts/CognifyToken.json';
 import StakingRewards from '../contracts/StakingRewards.json';
 import { toast } from 'react-toastify';
 
 const StakePage = () => {
+    const navigate = useNavigate();
     const [balance, setBalance] = useState('0');
     const [account, setAccount] = useState('');
     const [stakeAmount, setStakeAmount] = useState('');
@@ -155,11 +157,19 @@ const StakePage = () => {
 
     return (
         <div className="container-custom py-8 w-1/2 mx-auto">
+            <div className="flex justify-end mb-4">
+                <button
+                    onClick={() => navigate('/dashboard')}
+                    className="text-noir-primary hover:text-white text-sm font-semibold transition-colors duration-200"
+                >
+                    Back
+                </button>
+            </div>
             <div className="flex justify-between items-center mb-6">
                 <h1 className="text-2xl font-bold">Stake CGFY</h1>
                 <div className="bg-noir-card rounded-lg px-4 py-2">
                     <span className="text-noir-muted text-sm">Balance: </span>
-                    <span className="font-bold">{balance} CGFY</span>
+                    <span className="font-bold">{Number(balance).toFixed(3)} CGFY</span>
                 </div>
             </div>
             <motion.div
@@ -173,7 +183,7 @@ const StakePage = () => {
                             <label className="text-noir-muted text-sm">Amount to Stake</label>
                             <button
                                 onClick={handleMaxClick}
-                                className="text-noir-primary hover:text-noir-secondary text-sm transition-colors duration-200"
+                                className="text-noir-primary hover:text-white text-sm transition-colors duration-200"
                             >
                                 MAX
                             </button>
@@ -199,29 +209,6 @@ const StakePage = () => {
                         >
                             {isStaking ? 'Staking...' : 'Stake'}
                         </motion.button>
-                    </div>
-                </div>
-            </motion.div>
-
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.1 }}
-                className="bg-noir-card rounded-lg p-6 mt-6"
-            >
-                <h2 className="text-xl font-bold mb-6">Staking Stats</h2>
-                <div className="grid grid-cols-3 gap-6">
-                    <div className="bg-noir-bg rounded-lg p-4 border border-noir-accent">
-                        <div className="text-noir-muted text-sm mb-1">CGFY APR</div>
-                        <div className="text-2xl font-bold text-noir-primary">12.5%</div>
-                    </div>
-                    <div className="bg-noir-bg rounded-lg p-4 border border-noir-accent">
-                        <div className="text-noir-muted text-sm mb-1">Fee APR</div>
-                        <div className="text-2xl font-bold text-noir-primary">2.5%</div>
-                    </div>
-                    <div className="bg-noir-bg rounded-lg p-4 border border-noir-accent">
-                        <div className="text-noir-muted text-sm mb-1">Total APR</div>
-                        <div className="text-2xl font-bold text-gradient">15.0%</div>
                     </div>
                 </div>
             </motion.div>

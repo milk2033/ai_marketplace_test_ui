@@ -8,6 +8,8 @@ import Marketplace from './pages/Marketplace';
 import Upload from './pages/Upload';
 import ModelDetails from './pages/ModelDetails';
 import StakePage from './pages/StakePage';
+import WithdrawPage from './pages/WithdrawPage';
+import Dashboard from './pages/Dashboard';
 import './index.css';
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
             <Route path="/upload" element={<Upload />} />
             <Route path="/models/:id" element={<ModelDetails />} />
             <Route path="/stake" element={<StakePage />} />
+            <Route path="/withdraw" element={<WithdrawPage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
         <ToastContainer
