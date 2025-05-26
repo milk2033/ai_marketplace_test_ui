@@ -25,7 +25,7 @@ export default function Marketplace() {
                 return;
             }
 
-            // 1) Connect to MetaMask’s provider
+            // 1) Connect to MetaMask's provider
             const provider = new ethers.BrowserProvider(window.ethereum);
 
             // 2) Instantiate the contract for read calls
@@ -163,7 +163,7 @@ function ModelCard({ model, onBuy }) {
                         e.stopPropagation()
                         onBuy(model)
                     }}
-                    className="btn-primary hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300"
+                    className="btn-primary shadow-none hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300"
                 >
                     Buy Now
                 </button>

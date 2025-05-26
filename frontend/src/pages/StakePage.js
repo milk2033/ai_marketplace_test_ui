@@ -205,7 +205,7 @@ const StakePage = () => {
                             whileTap={{ scale: 0.98 }}
                             onClick={handleStake}
                             disabled={isStaking}
-                            className={`w-full mt-4 btn-primary py-3 rounded-lg font-bold hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 ${isStaking ? 'opacity-50 cursor-not-allowed' : ''}`}
+                            className={`w-full mt-4 btn-primary py-3 rounded-lg font-bold shadow-none hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 ${isStaking ? 'opacity-50 cursor-not-allowed' : ''}`}
                         >
                             {isStaking ? 'Staking...' : 'Stake'}
                         </motion.button>
