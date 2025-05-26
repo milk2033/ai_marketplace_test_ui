@@ -64,7 +64,9 @@ contract LoraMarketplace {
         uint256 revShare = (msg.value * revShareBP) / 10_000;
         uint256 sellerAmt = msg.value - revShare;
 
-        IRevShare(revShareReceiver).distributeRevShare{value: revShare}();
+        if (revShare > 0) {
+            IRevShare(revShareReceiver).distributeRevShare{value: revShare}();
+        }
 
         model.creator.transfer(sellerAmt);
         model.purchases++;

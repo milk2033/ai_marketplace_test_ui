@@ -1,51 +1,123 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
+// src/components/Marketplace.jsx
+import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { toast } from 'react-toastify'
+import { ethers } from 'ethers'
+import LoraMarketplaceJSON from '../contracts/LoraMarketplace.json'
+import StakingRewardsJSON from '../contracts/StakingRewards.json'
+import { useNavigate } from 'react-router-dom'
 
-const Marketplace = () => {
-    const [models, setModels] = useState([]);
-    const [loading, setLoading] = useState(true);
+const MARKETPLACE_ADDRESS = LoraMarketplaceJSON.address
+
+export default function Marketplace() {
+    const [models, setModels] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        fetchModels();
-    }, []);
+        fetchModels()
+    }, [])
 
-    const fetchModels = async () => {
+    async function fetchModels() {
+        setLoading(true);
         try {
-            const response = await axios.get('http://localhost:5000/api/models');
-            setModels(response.data.models);
-        } catch (error) {
+            if (!window.ethereum) {
+                toast.error('Please install MetaMask');
+                return;
+            }
+
+            // 1) Connect to MetaMask’s provider
+            const provider = new ethers.BrowserProvider(window.ethereum);
+
+            // 2) Instantiate the contract for read calls
+            const contract = new ethers.Contract(
+                MARKETPLACE_ADDRESS,
+                LoraMarketplaceJSON.abi,
+                provider
+            );
+
+            const staking = new ethers.Contract(
+                StakingRewardsJSON.address,
+                StakingRewardsJSON.abi,
+                provider
+            );
+
+            const revReceived = await contract.revShareReceiver() //lora marketplace address
+
+            // (Optional) If you import StakingRewardsJSON at the top, you could do:
+            // const staking = new ethers.Contract(revReceiver, StakingRewardsJSON.abi, provider);
+            // console.log("Staking.totalStaked:", await staking.totalStaked());
+
+            // 3) Read modelCount and then pull each model
+            const countBig = await contract.modelCount();      // bigint
+            const count = Number(countBig);                // JS number
+
+
+            const arr = [];
+            for (let i = 1; i <= count; i++) {
+                const m = await contract.getModel(i);
+                arr.push({
+                    id: Number(m.id),
+                    name: m.name,
+                    downloadUrl: m.downloadUrl,
+                    creator: m.creator,
+                    price: m.price,
+                    purchases: Number(m.purchases),
+                });
+            }
+            setModels(arr);
+        } catch (err) {
+            console.error(err);
             toast.error('Failed to fetch models');
-            console.error('Error fetching models:', error);
         } finally {
             setLoading(false);
         }
-    };
+    }
 
-    const handleBuy = async (modelId) => {
+    async function handleBuy(model) {
         try {
-            const response = await axios.post(`http://localhost:5000/api/models/${modelId}/buy`);
-            toast.success('Purchase successful!');
-            fetchModels();
-        } catch (error) {
-            toast.error('Failed to purchase model');
-            console.error('Error purchasing model:', error);
+            if (!window.ethereum) {
+                toast.error('Please install MetaMask')
+                return
+            }
+
+            // 1) Get signer so we can send a tx
+            const provider = new ethers.BrowserProvider(window.ethereum)
+            await provider.send('eth_requestAccounts', [])  // pops up MetaMask if needed
+            const signer = await provider.getSigner()
+
+            // 2) Connect contract to signer
+            const contract = new ethers.Contract(
+                MARKETPLACE_ADDRESS,
+                LoraMarketplaceJSON.abi,
+                signer
+            )
+
+            // 3) Call buyModel(id) with exactly the model.price as value
+            console.log('submitting tx')
+            const tx = await contract.buyModel(model.id, { value: model.price })
+            await tx.wait()
+            console.log('tx submitted')
+            toast.success('Purchase successful!')
+            fetchModels()
+        } catch (err) {
+            console.error(err)
+            toast.error('Failed to purchase model')
         }
-    };
+    }
 
     if (loading) {
         return (
             <div className="flex justify-center items-center min-h-[60vh]">
                 <div className="spinner"></div>
             </div>
-        );
+        )
     }
 
     return (
         <div className="container-custom">
-            <h1 className="text-4xl font-bold mb-8 text-gradient">AI Models Marketplace</h1>
+            <h1 className="text-4xl font-bold mb-8 text-gradient">
+                AI Models Marketplace
+            </h1>
 
             <motion.div
                 className="grid-auto-fit"
@@ -58,19 +130,16 @@ const Marketplace = () => {
                 ))}
             </motion.div>
         </div>
-    );
-};
+    )
+}
 
-const ModelCard = ({ model, onBuy }) => {
-    const navigate = useNavigate();
+function ModelCard({ model, onBuy }) {
+    const navigate = useNavigate()
 
     const handleCardClick = (e) => {
-        // Prevent navigation if clicking the buy button
-        if (e.target.closest('.btn-primary')) {
-            return;
-        }
-        navigate(`/models/${model.id}`);
-    };
+        if (e.target.closest('.btn-primary')) return
+        navigate(`/models/${model.id}`)
+    }
 
     return (
         <motion.div
@@ -79,16 +148,20 @@ const ModelCard = ({ model, onBuy }) => {
             className="card cursor-pointer transition-all duration-300 hover:shadow-[0_0_15px_rgba(147,51,234,0.25)] hover:border-purple-500/20"
             onClick={handleCardClick}
         >
-            <h3 className="text-xl font-bold text-noir-primary mb-2">{model.name}</h3>
-            <p className="text-noir-muted mb-4">Creator: {model.creator.slice(0, 6)}...{model.creator.slice(-4)}</p>
+            <h3 className="text-xl font-bold text-noir-primary mb-2">
+                {model.name}
+            </h3>
+            <p className="text-noir-muted mb-4">
+                Creator: {model.creator.slice(0, 6)}…{model.creator.slice(-4)}
+            </p>
             <div className="flex justify-between items-center">
                 <span className="text-noir-primary font-bold">
-                    {parseInt(model.price) / 1e18} ETH
+                    {ethers.formatEther(model.price)} ETH
                 </span>
                 <button
                     onClick={(e) => {
-                        e.stopPropagation();
-                        onBuy(model.id);
+                        e.stopPropagation()
+                        onBuy(model)
                     }}
                     className="btn-primary hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300"
                 >
@@ -96,7 +169,5 @@ const ModelCard = ({ model, onBuy }) => {
                 </button>
             </div>
         </motion.div>
-    );
-};
-
-export default Marketplace; 
+    )
+}

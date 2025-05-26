@@ -4,9 +4,6 @@ npx hardhat init
 
 todo list:
 willl need a token faucet, so probably need to alter the token supply to infinity
-plug in staking contract
 plug in APRs
-update model page
 dashboard for "my models"
-remove backend dependency, put everything on front end
-
+need a withdraw UI

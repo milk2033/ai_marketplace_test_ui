@@ -16,10 +16,6 @@ async function main() {
     const cognifyToken = await CognifyToken_contract.deploy();
     await cognifyToken.waitForDeployment();
 
-    console.log('deploying LoraMarketplace...  ')
-    const LoraMarketplace = await LoraMarketplace_contract.deploy(500, cognifyToken.target);
-    await LoraMarketplace.waitForDeployment();
-
     const currentBlock = await ethers.provider.getBlockNumber();
     const startBlock = currentBlock + 1;
     const secondsPerYear = 365 * 24 * 3600;
@@ -32,6 +28,10 @@ async function main() {
     console.log('deploying StakingRewards...  ')
     const stakingRewards = await StakingRewards_contract.deploy(cognifyToken.target, cognifyToken.target, startBlock, endBlock, rewardPerBlock);
     await stakingRewards.waitForDeployment();
+
+    console.log('deploying LoraMarketplace...  ')
+    const LoraMarketplace = await LoraMarketplace_contract.deploy(500, stakingRewards.target);
+    await LoraMarketplace.waitForDeployment();
 
     console.log("LoraMarketplace deployed to:", LoraMarketplace.target);
     console.log("CognifyToken deployed to:", cognifyToken.target);
