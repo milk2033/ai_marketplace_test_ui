@@ -101,7 +101,7 @@ const Cloudflare = () => {
                         />
                         <label
                             htmlFor="file-upload"
-                            className="cursor-pointer text-noir-primary hover:text-noir-secondary transition-colors duration-200"
+                            className="cursor-pointer text-noir-primary hover:text-white transition-colors duration-200"
                         >
                             {file ? file.name : 'Click to upload or drag and drop'}
                         </label>
@@ -113,7 +113,7 @@ const Cloudflare = () => {
                     whileTap={{ scale: 0.98 }}
                     type="submit"
                     disabled={loading}
-                    className={`w-full py-3 rounded-lg font-bold ${loading
+                    className={`w-full py-3 rounded-lg font-bold shadow-none hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 ${loading
                         ? 'bg-noir-muted cursor-not-allowed'
                         : 'btn-primary'
                         }`}
