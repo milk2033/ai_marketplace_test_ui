@@ -94,13 +94,13 @@ const ConnectWalletButton = () => {
 
     return (
         <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={connectWallet}
             disabled={isConnecting}
-            className={`btn-primary text-xs py-1 px-2 ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`btn-primary shadow-none hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300 ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
         >
-            {isConnecting ? 'Connecting...' : 'Connect Wallet'}
+            {isConnecting ? 'Connecting...' : account ? `${account.slice(0, 6)}...${account.slice(-4)}` : 'Connect Wallet'}
         </motion.button>
     );
 };

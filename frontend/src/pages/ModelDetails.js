@@ -159,7 +159,7 @@ export default function ModelDetails() {
                             whileTap={{ scale: 0.95 }}
                             onClick={handleBuy}
                             disabled={buying}
-                            className="btn-primary w-full hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300"
+                            className="btn-primary w-full shadow-none hover:shadow-[0_0_5px_rgba(255,255,255,0.5),0_0_20px_rgba(255,255,255,0.5)] transition-all duration-300"
                         >
                             {buying ? 'Purchasing…' : 'Buy Now'}
                         </motion.button>
